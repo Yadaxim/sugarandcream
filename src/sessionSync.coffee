@@ -3,7 +3,7 @@ uptoDate = (name,related) -> localStorage["#{name}_version"] is version(related)
 version = (related) ->
   session.versions.filter((v)-> v["n"] in related).map((v) -> v.f).reduce(((x,y) -> x + y), 0).toString()
 
-sync = (vars, callback)->
+window.sync = (vars, callback)->
   t = Date.now()
   async.each vars.concat(sync_base), syncOne, (err)->
     if err
