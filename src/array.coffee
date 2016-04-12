@@ -10,6 +10,11 @@ Array::head = ->
   return this[0]
 Array::tail = ->
   return Array::slice.call(this, 1)
+
+Array::clean = ()-> @filter (e)-> e
+
+Array::cleanMap = (fn)-> @map(fn).clean()
+
 Array::transpose = (i, j) ->
   if (@length < i + 1) or (@length < j + 1)
     return this
@@ -29,16 +34,29 @@ Array::unique = ->
   for key in [0...@length]
     o[this[key]] = this[key]
   return (value for key, value of o)
+Array::uniqueBy = (v) ->
+  o = new Object
+  for key in [0...@length]
+    o[this[key][v]] = this[key]
+  value for i, value of o
 Array::difference = (a) ->
   @filter (e) -> e not in a
+
+Array::differenceBy = (a, y) ->
+  @filter (e) ->
+    e[y] not in a.map (i) -> i[y]
+
 Array::intersection = (a) ->
   @filter (e) -> e in a
+
 Array::union = (a) ->
   @difference(a).concat a
+
 Array::remove = (v) ->
   for e,i in this
     return @splice i,1 if e is v
   return undefined
+
 Array::humanPrint = (s,y,none) ->
   none = none or undefined
   return none if @length is 0
@@ -47,6 +65,7 @@ Array::humanPrint = (s,y,none) ->
   head = @slice(0, -1).join "#{ s or ',' } "
   return head + " #{ y or '&' } " + last
 # Arrays of Objects
+
 Array::filterBy = (p, v) ->
   @filter (x) -> x[p] is v
 
@@ -59,18 +78,12 @@ Array::firstById = (id) -> @firstBy('id', id)
 Array::findFirstByFn = (v, fn) ->
   for e in @
     return e if fn(e) is v
-Array::uniqueBy = (v) ->
-  o = new Object
-  for key in [0...@length]
-    o[this[key][v]] = this[key]
-  value for i, value of o
+
 Array::removeBy = (p, v) ->
   for e,i in this
     return @splice i,1 if e[p] is v
   return undefined
-Array::differenceBy = (a, y) ->
-  @filter (e) ->
-    e[y] not in a.map (i) -> i[y]
+
 Array::unionBy = (a, y) ->
   @differenceBy(a, y).concat a
 
@@ -141,3 +154,23 @@ Array::chunk = (testFn, elementFn, groupFn) ->
         part = [eFn(e)]
   final.push gFn(value, part)
   return final
+
+Array::sample = (s=1) -> @shuffle()[..s]
+
+Array::chunkByN = (chunkSize) ->
+  array = this
+  [].concat.apply [], array.map((elem, i) ->
+    (if i % chunkSize then [] else [array.slice(i, i + chunkSize)]))
+
+Array::toObj =  -> @map (n,i) -> {n: n, i: i}
+
+
+Array::powerset = () ->
+  if @length is 0
+    [[]]
+  else  
+    [x,xs...]=@
+    ys=xs.powerset()
+    result=([x].concat y for y in ys).concat ys
+
+Array::sortedPowerset = (r) -> @.powerset().sortByFn r, (x)->x.length
