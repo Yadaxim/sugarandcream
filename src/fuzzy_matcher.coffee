@@ -111,8 +111,6 @@ $.fuzzy_matcher = (o) ->
     o.extra_test = ((e)-> return true) unless $.isFunction o.extra_test
     o.or_test =    ((e)-> return false) unless $.isFunction o.or_test
     
-    o.no_char_callback = (count, input, set) -> o.all_callback(count, input, set) unless $.isFunction o.no_char_callback
-
     if $(o.match_text_input).val().length > (+o.min_char or 0)
       input = $(o.match_text_input).val().trim()
       inputs = [input]   # dont care about spaces if i did then #inputs = input.split(' ')
@@ -151,7 +149,7 @@ $.fuzzy_matcher = (o) ->
       else ;
 
     else
-      utils.fnRun o.no_char_callback, o.search_in.length ,$(o.match_text_input).val(), o.search_in
+      utils.fnRun o.all_callback, o.search_in.length ,$(o.match_text_input).val(), o.search_in
 
 
   if o.auto_trigger then $(o.match_text_input).trigger 'input'
