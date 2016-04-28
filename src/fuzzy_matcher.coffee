@@ -15,6 +15,7 @@ $.fuzzy_matcher = (o) ->
   # some_callback:        called when none < #matches < max_matches
   # perfect_callback:     called in case an element matches perfecty with search, even if others match unperfectly
   # extra_test:           an extra test to cosider match
+  # or_test:              a test to be checked besides attributes in input
   # auto_trigger:         boolean to decide if to trigger after definition
   # dropdown:             a selector id for the dropdown ul where the results are shown
 
@@ -106,13 +107,14 @@ $.fuzzy_matcher = (o) ->
             false
 
     o.extra_test = ((e)-> return true) unless $.isFunction o.extra_test
-
+    o.or_test =    ((e)-> return false) unless $.isFunction o.or_test
+    
     if $(o.match_text_input).val().length > (+o.min_char or 0)
       input = $(o.match_text_input).val().trim()
       inputs = [input]   # dont care about spaces if i did then #inputs = input.split(' ')
 
       o.search_in.forEach (e) ->
-        if found_attributes(e, inputs) and o.extra_test(e)
+        if o.or_test(e) or (found_attributes(e, inputs) and o.extra_test(e))
           utils.fnRun o.match_callback, e
           none = false
           count += 1
