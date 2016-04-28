@@ -14,6 +14,7 @@ $.fuzzy_matcher = (o) ->
   # many_callback:        (must have max-matches) fn to call when all > #matches > max results
   # some_callback:        called when none < #matches < max_matches
   # perfect_callback:     called in case an element matches perfecty with search, even if others match unperfectly
+  # no_char_callback:     called when char count in input < min char   
   # extra_test:           an extra test to cosider match
   # or_test:              a test to be checked besides attributes in input
   # auto_trigger:         boolean to decide if to trigger after definition
@@ -92,6 +93,7 @@ $.fuzzy_matcher = (o) ->
         
 
     found_attributes = (e, inputs)->
+      return false if inputs[0] is ''
       inputs.every (i)->
         re = searcheregexp(i, (o.search_mode or 'fuzzy') )
         o.search_by_attributes.some (attr)->
@@ -109,6 +111,8 @@ $.fuzzy_matcher = (o) ->
     o.extra_test = ((e)-> return true) unless $.isFunction o.extra_test
     o.or_test =    ((e)-> return false) unless $.isFunction o.or_test
     
+    o.no_char_callback = (count, input, set) -> o.all_callback(count, input, set) unless $.isFunction o.no_char_callback
+
     if $(o.match_text_input).val().length > (+o.min_char or 0)
       input = $(o.match_text_input).val().trim()
       inputs = [input]   # dont care about spaces if i did then #inputs = input.split(' ')
@@ -147,7 +151,7 @@ $.fuzzy_matcher = (o) ->
       else ;
 
     else
-      utils.fnRun o.all_callback, o.search_in.length ,$(o.match_text_input).val(), o.search_in
+      utils.fnRun o.no_char_callback, o.search_in.length ,$(o.match_text_input).val(), o.search_in
 
 
   if o.auto_trigger then $(o.match_text_input).trigger 'input'
