@@ -44,18 +44,20 @@ Array::difference = (a) ->
 
 Array::differenceBy = (a, y) ->
   @filter (e) ->
-    e[y] not in a.map (i) -> i[y]
+    e[y] not in a.pluck(y)
 
 Array::intersection = (a) ->
   @filter (e) -> e in a
 
+Array::intersectionBy = (a, y) ->
+  @filter (e) -> 
+    e[y] in a.pluck(y)
+
 Array::union = (a) ->
   @difference(a).concat a
 
-Array::remove = (v) ->
-  for e,i in this
-    return @splice i,1 if e is v
-  return undefined
+Array::unionBy = (a, y) ->
+  @differenceBy(a, y).concat a
 
 Array::humanPrint = (s,y,none) ->
   none = none or undefined
@@ -79,13 +81,16 @@ Array::findFirstByFn = (v, fn) ->
   for e in @
     return e if fn(e) is v
 
+Array::remove = (v) ->
+  for e,i in this
+    return @splice i,1 if e is v
+  return undefined
+
 Array::removeBy = (p, v) ->
   for e,i in this
     return @splice i,1 if e[p] is v
   return undefined
 
-Array::unionBy = (a, y) ->
-  @differenceBy(a, y).concat a
 
 Array::sortBy = (f, r, p) ->
   sb = ->
@@ -130,10 +135,13 @@ Array::groupBy = (p) ->
       if o[e[p]] instanceof Array then o[e[p]].push e
       else o[e[p]] = [e]
   return o
-Array::pluck = (p) ->
-  @.map (x) ->
+
+Array::pluck = (p) -> 
+  @.map (x)-> 
     x[p]
+
 Array::sum = () -> @reduce(((x, y)->x+y),0)
+
 Array::chunk = (testFn, elementFn, groupFn) ->
   if @length is 0 then return @
   tFn = testFn or ((e) -> e)
