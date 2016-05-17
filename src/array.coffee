@@ -161,7 +161,7 @@ Array::chunk = (testFn, elementFn, groupFn) ->
   for e in @
     do (e) ->
       value = tFn(e)
-      if value is last_val
+      if JSON.stringify(value) is JSON.stringify(last_val)
         part.push eFn(e)
       else
         final.push gFn(last_val, part)
@@ -169,6 +169,7 @@ Array::chunk = (testFn, elementFn, groupFn) ->
         part = [eFn(e)]
   final.push gFn(value, part)
   return final
+
 
 Array::sample = (s=1) -> @shuffle()[..s]
 
