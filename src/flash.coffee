@@ -48,23 +48,30 @@ window.flash =
       .fadeOut 'fast'
   info: (t) ->
     $('#api-message-container').append "<span class='info alert alert-info' bind='flash'>#{ t }</span>"
+
 $(document).ajaxStart ->
   $('[bind="flash"]').remove()
+
 $(document).ajaxSend ->
   flash.info dictionary['working']
+
 $(document).ajaxSuccess (event, xhr, options) ->
   m = xhr.getResponseHeader 'API-Message'
   if m not in [null,undefined]
     flash.success decodeURIComponent(escape m)
+
 $(document).ajaxError (event, xhr, ajaxOptions, thrownError) ->
   if xhr.status is 422
     flash.error prettyFormat(xhr.responseText)
   else
     flash.error prettyFormat("#{ xhr.status }: #{ prettyFormat(xhr.responseText) }")
+
 $(document).ajaxComplete (event, xhr) ->
   $('[bind="flash"].info').remove()
+
 $(document).on 'click', '#api-message-container', ->
   $('[bind="flash"]').remove()
+
 window.onerror = (errorrs, file, line) ->
   $('[bind="flash"].info').remove()
   $('body').prepend "<div id='js-error' class='error alert alert-danger'>

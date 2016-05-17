@@ -24,6 +24,7 @@ Array::transpose = (i, j) ->
   # hacky shmacky...
   @splice @length, 0
   return this
+
 Array::shuffle = ->
   for i in [@length-1..1]
     j = Math.floor Math.random() * (i + 1)
@@ -34,6 +35,7 @@ Array::unique = ->
   for key in [0...@length]
     o[this[key]] = this[key]
   return (value for key, value of o)
+
 Array::uniqueBy = (v) ->
   o = new Object
   for key in [0...@length]
@@ -90,6 +92,11 @@ Array::removeBy = (p, v) ->
   for e,i in this
     return @splice i,1 if e[p] is v
   return undefined
+
+Array::removeFirstByFn = (v, fn) ->
+  for e,i in @
+    return @splice i,1 if fn(e) is v 
+  return undefined  
 
 
 Array::sortBy = (f, r, p) ->
