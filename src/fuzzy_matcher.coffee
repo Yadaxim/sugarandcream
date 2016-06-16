@@ -14,7 +14,6 @@ $.fuzzy_matcher = (o) ->
   # many_callback:        (must have max-matches) fn to call when all > #matches > max results
   # some_callback:        called when none < #matches < max_matches
   # perfect_callback:     called in case an element matches perfecty with search, even if others match unperfectly
-  # no_char_callback:     called when char count in input < min char   
   # extra_test:           an extra test to cosider match
   # or_test:              a test to be checked besides attributes in input
   # auto_trigger:         boolean to decide if to trigger after definition
@@ -93,7 +92,7 @@ $.fuzzy_matcher = (o) ->
         
 
     found_attributes = (e, inputs)->
-      return false if inputs[0] is ''
+      return true if inputs[0] is ''
       inputs.every (i)->
         re = searcheregexp(i, (o.search_mode or 'fuzzy') )
         o.search_by_attributes.some (attr)->
