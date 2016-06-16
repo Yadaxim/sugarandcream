@@ -190,3 +190,13 @@ Array::powerset = () ->
     result=([x].concat y for y in ys).concat ys
 
 Array::sortedPowerset = (r) -> @.powerset().sortByFn r, (x)->x.length
+
+
+Array::flatten = ()->
+  flattened = []
+  for element in @
+    if '[object Array]' is Object::toString.call element
+      flattened = flattened.concat flatten element
+    else
+      flattened.push element
+  flattened

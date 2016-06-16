@@ -6,7 +6,10 @@ $.fn.dropdown_matcher = (o) ->
   # collection:       eg: session.users
   # attributes:       eg: ["firstname", "lastname", "email", ((x)-> x.p)]
   # dropdown:         id for the dropdown ul where the results are shown
-  
+ 
+
+  # many_results:    def .many-results
+  # no_results:      def .no-results
 
   # dropdown_size:    how long should the dropdown be 
   #                   (default=10)
@@ -104,23 +107,26 @@ $.fn.dropdown_matcher = (o) ->
         reset_dropdown()
         switch
           when value.length == 0
-            $(".no-results").hide()
-            $(".many-results").hide()
+            if o.no_results    then $("#{ o.no_results  }").hide() else  $(".no-results").hide()
+            if o.many_results  then $("#{ o.many_results}").hide() else  $(".many-results").hide()
             $("#{ o.dropdown}").hide()
            
           when not count
-            $(".no-results").show()
-            $(".many-results").hide()
+            if o.no_results    then $("#{ o.no_results  }").show() else  $(".no-results").show()
+            if o.many_results  then $("#{ o.many_results}").hide() else  $(".many-results").hide()
+
             $("#{ o.dropdown}").hide()
             
           when count > (o.dropdown_size or 10)
-            $(".no-results").hide()
-            $(".many-results").show()
+            if o.no_results    then $("#{ o.no_results  }").hide() else  $(".no-results").hide()
+            if o.many_results  then $("#{ o.many_results}").show() else  $(".many-results").show()
+
             $("#{ o.dropdown}").hide()
            
           else
-            $(".no-results").hide()
-            $(".many-results").hide()
+            if o.no_results    then $("#{ o.no_results  }").hide() else  $(".no-results").hide()
+            if o.many_results  then $("#{ o.many_results}").hide() else  $(".many-results").hide()
+
             $("#{ o.dropdown}").show()
             
     else #reset 0 chars
