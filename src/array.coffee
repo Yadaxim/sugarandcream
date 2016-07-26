@@ -45,15 +45,17 @@ Array::difference = (a) ->
   @filter (e) -> e not in a
 
 Array::differenceBy = (a, y) ->
+  a_plucked = a.pluck(y)
   @filter (e) ->
-    e[y] not in a.pluck(y)
+    e[y] not in a_plucked
 
 Array::intersection = (a) ->
   @filter (e) -> e in a
 
 Array::intersectionBy = (a, y) ->
+  a_plucked = a.pluck(y)
   @filter (e) -> 
-    e[y] in a.pluck(y)
+    e[y] in a_plucked
 
 Array::union = (a) ->
   @difference(a).concat a
