@@ -34,4 +34,4 @@ String::startsWith = (sub)->
   @lastIndexOf(sub,0) is 0
 
 
-String::truncate = (l) -> if string.length > l then string[0..l] + "..." else string
+String::truncate = (l) -> if @length > l then @[0..l] + "..." else @
