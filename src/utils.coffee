@@ -18,5 +18,13 @@ utils =
         if s[i-1] is t[j-1] then d[i][j] = d[i-1][j-1]
         else d[i][j] = Math.min (d[i-1][j]+1), (d[i][j-1]+1), (d[i-1][j-1]+1)
     return d[m][n]
+  charRange: (start, stop) ->
+    result = []
+    idx = start.charCodeAt(0)
+    end = stop.charCodeAt(0)
+    while idx <= end
+      result.push String.fromCharCode(idx)
+      ++idx
+    result
 if global? then global.utils = utils
 if window? then window.utils = utils
