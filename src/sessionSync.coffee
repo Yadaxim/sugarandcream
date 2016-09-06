@@ -13,7 +13,7 @@ window.sync = (vars, callback)->
       reportLocalStorage()
       callback()
 
-syncOne = (v,cb)->
+window.syncOne = (v,cb)->
   tt = Date.now()
   name = v['name']
   related = (sync_conf[name] and sync_conf[name]['related']) or v['related'] or []

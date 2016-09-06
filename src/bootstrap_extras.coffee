@@ -9,6 +9,7 @@ window.bs =
     $('#alert-modal').unbind()
     $('#alert-modal [bind="title"]').text o.title or dictionary['alert']
     $('#alert-modal [bind="text"]').text o.text
+    $('#alert-modal [bind="text"]').html o.html if o.html
     $('#alert-modal [bind="confirm"]').text o.confirm or dictionary['OK']
     $('#alert-modal [bind="confirm"]').addClass "btn-" + (o.confirm_btn_class or "default")
     $('#alert-modal').modal 'show'
@@ -18,6 +19,7 @@ window.bs =
     ['#confirm-yes', '#confirm-no'].forEach (s) -> $(s).unbind()
     $('#confirm-modal [bind="title"]').text o.title or dictionary['confirm']
     $('#confirm-modal [bind="text"]').text o.text
+    $('#confirm-modal [bind="text"]').html o.html if o.html
     $('#confirm-modal [bind="confirm"]').text o.confirm or dictionary['OK']
     $('#confirm-modal [bind="cancel"]').text o.cancel or dictionary['cancel']
     $('#confirm-modal [bind="confirm"]').addClass "btn-" + (o.confirm_btn_class or "default")
