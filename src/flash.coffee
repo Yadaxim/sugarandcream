@@ -63,6 +63,8 @@ $(document).ajaxSuccess (event, xhr, options) ->
 $(document).ajaxError (event, xhr, ajaxOptions, thrownError) ->
   if xhr.status is 422
     flash.error prettyFormat(xhr.responseText)
+  else if xhr.status is 401
+    window.location = '/login'
   else
     flash.error prettyFormat("#{ xhr.status }: #{ prettyFormat(xhr.responseText) }")
 
