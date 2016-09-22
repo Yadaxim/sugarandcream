@@ -28,7 +28,7 @@ window.syncOne = (v,cb)->
     $.get url, data, (response)->
       localStorage[name] = response unless fresh
       localStorage["#{name}_version"] = version(related) unless fresh
-      session[name] = $.parseJSON(response)
+      session[name] = response
       console.log "got #{name} in #{(Date.now() - tt)} ms"
       cb()
 
