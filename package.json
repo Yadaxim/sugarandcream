@@ -1,6 +1,6 @@
 {
   "name": "sugarandcream",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Something extra to make your coffescripts taste just right.",
   "main": "sugarandcream.min.js",
   "scripts": {

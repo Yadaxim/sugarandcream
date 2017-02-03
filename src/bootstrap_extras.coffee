@@ -20,7 +20,9 @@ window.bs =
     $('#confirm-modal [bind="title"]').text o.title or dictionary['confirm']
     $('#confirm-modal [bind="text"]').text o.text
     $('#confirm-modal [bind="text"]').html o.html if o.html
-   
+    
+    $('#confirm-modal .modal-dialog').addClass('modal-sm') if o.size is 'small'
+    $('#confirm-modal .modal-dialog').addClass('modal-lg') if o.size is 'large'
     $('#confirm-modal .modal-body').remove() unless(o.text or o.html)
 
     $('#confirm-modal [bind="confirm"]').text o.confirm or dictionary['OK']
