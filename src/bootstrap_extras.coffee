@@ -20,6 +20,9 @@ window.bs =
     $('#confirm-modal [bind="title"]').text o.title or dictionary['confirm']
     $('#confirm-modal [bind="text"]').text o.text
     $('#confirm-modal [bind="text"]').html o.html if o.html
+   
+    $('#confirm-modal .modal-body').remove() unless(o.text or o.html)
+
     $('#confirm-modal [bind="confirm"]').text o.confirm or dictionary['OK']
     $('#confirm-modal [bind="cancel"]').text o.cancel or dictionary['cancel']
     $('#confirm-modal [bind="confirm"]').addClass "btn-" + (o.confirm_btn_class or "default")
