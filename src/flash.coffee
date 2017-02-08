@@ -54,7 +54,8 @@ $(document).ajaxStart ->
 
 workingTimeout = undefined
 $(document).ajaxSend ->
-  workingTimeout = setTimeout( (()-> flash.info dictionary['working']), 20)
+  unless  workingTimeout
+    workingTimeout = setTimeout( (()-> flash.info dictionary['working']), 20)
 
 $(document).ajaxSuccess (event, xhr, options) ->
   m = xhr.getResponseHeader 'API-Message'
@@ -71,6 +72,7 @@ $(document).ajaxError (event, xhr, ajaxOptions, thrownError) ->
 
 $(document).ajaxComplete (event, xhr) ->
   clearTimeout(workingTimeout)
+  workingTimeout = undefined
   $('[bind="flash"].info').remove()
 
 $(document).on 'click', '#api-message-container', ->
