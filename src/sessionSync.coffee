@@ -13,6 +13,19 @@ window.sync = (vars, callback)->
       reportLocalStorage()
       callback()
 
+window.public_sync = (vars, callback)->
+  t = Date.now()
+  unless session?
+    session = new Object;
+
+  async.each vars, syncOne, (err)->
+    if err
+      console.log("Public Sync Error!!")
+    else
+      console.log("Public Sync Done! in #{(Date.now() - t)} ms")
+      reportLocalStorage()
+      callback()
+
 window.syncOne = (v,cb)->
   tt = Date.now()
   name = v['name']
