@@ -40,24 +40,18 @@ $.fn.dropdown_matcher = (o) ->
       return utils.fnRun o.unmatch_callback, e
     else
       return e.matches = false
-
- searcheregexp = (i, mode)->
-    return switch mode
-      when 'fuzzy' then new RegExp i.split('').map((x)->x.regExpEscape()).join(".*?") , "i"
-      when 'sub'   then new RegExp "#{ i.regExpEscape()}" , "i"
-      when 'exact' then new RegExp "^#{ i.regExpEscape()}", "i"
-      
-      
   found_attributes = (e, inputs) ->
+    return true if inputs[0] is ''
     inputs.every (i) ->
-      re = searcheregexp(i, (o.search_mode or 'fuzzy') )
+      re = new RegExp i.regExpEscape(), "i"
       o.attributes.some (attr)->
-          if $.isFunction( attr )and (f = attr(e))
-            re.test(f)
-          else if (a = e[attr])
-            re.test a
-          else
-            false
+        if $.isFunction( attr )and (f = attr(e))
+          re.test(f)
+        else if (a = e[attr])
+          a.split(" ").some (j)->
+            re.test(j)
+        else
+          false
 
   find_visible = (curr, direction) ->
     curr.removeClass 'active'
@@ -107,7 +101,7 @@ $.fn.dropdown_matcher = (o) ->
   $input.bind 'input', ->
 
     value = $input.val()
-    if value.length >= (+o.min_char or 1)
+    if value.length >= (+o.min_char or 0)
       words = value.split(" ")
       count = 0
       o.collection.forEach (e) ->
@@ -118,6 +112,7 @@ $.fn.dropdown_matcher = (o) ->
           unmatch_callback e
       if o.dropdown
         reset_dropdown()
+        console.log("EEE", value.length, count)
         switch
           when value.length == 0
             if o.no_results    then $("#{ o.no_results  }").hide() else  $(".no-results").hide()
