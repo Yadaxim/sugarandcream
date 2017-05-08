@@ -40,12 +40,25 @@ $.fn.dropdown_matcher = (o) ->
       return utils.fnRun o.unmatch_callback, e
     else
       return e.matches = false
+
+ searcheregexp = (i, mode)->
+    return switch mode
+      when 'fuzzy' then new RegExp i.split('').map((x)->x.regExpEscape()).join(".*?") , "i"
+      when 'sub'   then new RegExp "#{ i.regExpEscape()}" , "i"
+      when 'exact' then new RegExp "^#{ i.regExpEscape()}", "i"
+      
+      
   found_attributes = (e, inputs) ->
     inputs.every (i) ->
-      re = new RegExp i.regExpEscape(), "i"
+      re = searcheregexp(i, (o.search_mode or 'fuzzy') )
       o.attributes.some (attr)->
-        e[attr].split(" ").some (j)->
-          re.test j
+          if $.isFunction( attr )and (f = attr(e))
+            re.test(f)
+          else if (a = e[attr])
+            re.test a
+          else
+            false
+
   find_visible = (curr, direction) ->
     curr.removeClass 'active'
     t = (if direction is 'up' then curr.prev() else curr.next())
