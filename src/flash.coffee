@@ -39,7 +39,7 @@ window.flash =
     "
   error: (t) ->
     # errors will use divs so they are more exagerated (the take the entire width because of this)
-    $('#api-message-container').append "<div class='error alert alert-danger' bind='flash'><span bind='error-message'>#{ t }</span></div>"
+    $('#api-message-container').append "<div class='error alert alert-danger' bind='flash'><span bind='error-message'>#{ t }</span><span class='mdi mdi-close-circle float-right close-icon pointer'></span></div>"
   success: (t) ->
     $('[bind="flash"]').remove()
     $('#api-message-container').append "<span class='success alert alert-success' bind='flash'><span bind='message'>#{ t }</span></span>"
@@ -73,7 +73,7 @@ $(document).ajaxComplete (event, xhr) ->
   workingTimeout = undefined
   $('[bind="flash"].info').remove()
 
-$(document).on 'click', '#api-message-container', ->
+$(document).on 'click', '#api-message-container .alert-success , #api-message-container .close-icon', ->
   $('[bind="flash"]').remove()
 
 window.onerror = (errorrs, file, line) ->
