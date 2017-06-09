@@ -1,4 +1,4 @@
-Number::toCurrency = (exchange_rate) -> "$" +(@ * (if exchange_rate then exchange_rate else 1)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+Number::toCurrency = () -> "$" +@toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
 Number::ms2coloquial = ->
 
